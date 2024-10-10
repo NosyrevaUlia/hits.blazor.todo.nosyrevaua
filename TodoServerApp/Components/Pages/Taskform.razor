@@ -1,0 +1,11 @@
+﻿@page "/tasks/add"
+
+<EditForm Model="TaskItem">
+	
+	<InputText @bind-Value="TaskItem.Title"/>
+	<InputText @bind-Value="TaskItem.Description"/>
+</EditForm>
+
+@code {
+	TaskItem TaskItem { get; set; } = new();
+}
