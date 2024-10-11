@@ -9,5 +9,11 @@ namespace TodoServerApp.Data.Services
         {
             return await context.TaskItems.ToArrayAsync();
         }
+
+        public async Task SaveAsync(TaskItem item)
+        {
+            await context.TaskItems.AddAsync(item);
+            await context.SaveChangesAsync();   
+        }
     }
 }

@@ -1,11 +1,40 @@
 ﻿@page "/tasks/add"
+@inject IDataService data
+@inject NavigationManager navigate
 
-<EditForm Model="TaskItem">
-	
-	<InputText @bind-Value="TaskItem.Title"/>
-	<InputText @bind-Value="TaskItem.Description"/>
+<EditForm Model="TaskItem" FormName="TaskForm" OnValidSubmit="ValidSubmit">
+	<DataAnnotationsValidator/>
+	<ValidationSummary/>
+	<h2>New Task</h2>
+	<InputNumber @bind-Value="TaskItem.Id" hidden/>
+	<div class="form-group d-flex justify-content-between m-2">
+		<label class="col-form-label col-3">Name</label>
+		<InputTextArea @bind-Value="TaskItem.Title" Class="form-control" />
+		<ValidationMessage For="() => TaskItem.Title"/>
+	</div>
+	<div class="form-group d-flex justify-content-between m-2">
+		<label class="col-form-label col-3">Description</label>
+		<InputTextArea @bind-Value="TaskItem.Description" Class="form-control" />
+		<ValidationMessage For="() => TaskItem.Description" />
+	</div>
+	<div class="form-group d-flex justify-content-between m-2">
+		<label class="col-form-label col-3">EndDate</label>
+		<InputDate @bind-Value="TaskItem.FinishDate" Class="form-control" />
+		<ValidationMessage For="() => TaskItem.FinishDate" />
+	</div>
+	<div class="btn-group">
+		<button class="btn btn-primary m-2" type="submit">Save Changes</button>
+		<a class="btn btn-primary m-2" href="/">Ctrl+z</a>
+	</div>
 </EditForm>
 
 @code {
+	[SupplyParameterFromForm]
 	TaskItem TaskItem { get; set; } = new();
+
+	async Task ValidSubmit()
+	{
+		await data.SaveAsync(TaskItem!);
+		navigate.NavigateTo("/");
+	}
 }
